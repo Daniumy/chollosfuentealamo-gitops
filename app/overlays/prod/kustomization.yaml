@@ -6,6 +6,7 @@ namespace: chollos-prod        # todo lo de este overlay va a este namespace
 resources:
   - namespace.yaml
   - ../../base
+  - ingress.yaml
 
 # Crea el ConfigMap "web-config" a partir de config.js.
 # Kustomize le añade un hash al nombre (web-config-7f9k2...): si cambias config.js,
