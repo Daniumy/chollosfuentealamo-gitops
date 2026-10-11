@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: chollos-web # nombre "lógico": cada overlay lo sustituye por la imagen real + tag
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          readinessProbe: # no le mandes tráfico hasta que responda
+            httpGet:
+              path: /
+              port: 80
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/config.js # "tapa" el config.js de la imagen
+              subPath: config.js
+      volumes:
+        - name: config
+          configMap:
+            name: web-config
