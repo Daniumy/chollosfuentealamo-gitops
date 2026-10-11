@@ -20,4 +20,4 @@ configMapGenerator:
 images:
   - name: chollos-web
     newName: europe-southwest1-docker.pkg.dev/chollos-fa-4821/chollos/web
-    newTag: b7e45eb
+    newTag: fd91aa7
