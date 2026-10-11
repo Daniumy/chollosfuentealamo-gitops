@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: chollos-dev        # todo lo de este overlay va a este namespace
+
+resources:
+  - namespace.yaml
+  - ../../base
+  - ingress.yaml
+
+# Crea el ConfigMap "web-config" a partir de config.js.
+# Kustomize le añade un hash al nombre (web-config-7f9k2...): si cambias config.js,
+# cambia el nombre y los pods se reinician solos con la nueva config.
+configMapGenerator:
+  - name: web-config
+    files:
+      - config.js
+
+# Sustituye la imagen "lógica" de la base por la real. Jenkins cambiará newTag en cada deploy.
+images:
+  - name: chollos-web
+    newName: europe-southwest1-docker.pkg.dev/chollos-fa-4821/chollos/web
+    newTag: manual-1

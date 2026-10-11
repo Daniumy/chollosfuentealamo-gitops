@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chollos-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Daniumy/chollosfuentealamo-gitops.git
+    targetRevision: main
+    path: app/overlays/dev          # ArgoCD detecta solo que es Kustomize
+  destination:
+    server: https://kubernetes.default.svc   # "este mismo cluster"
+    namespace: chollos-dev
+  syncPolicy:
+    automated:
+      prune: true        # si borras algo de Git, bórralo del cluster
+      selfHeal: true     # si alguien toca el cluster a mano, vuelve a lo que dice Git
+    syncOptions:
+      - CreateNamespace=true

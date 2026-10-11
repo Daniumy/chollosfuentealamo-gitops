@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt # "cert-manager, consígueme un certificado"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - dev.chollosfuentealamo.com
+      secretName: web-tls # aquí guardará el certificado
+  rules:
+    - host: dev.chollosfuentealamo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
